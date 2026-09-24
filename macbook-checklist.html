@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شيك ليست فحص MacBook Pro M1 - نسخة صينية (مستعمل)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D0F0E;
+    --surface: #151816;
+    --surface-2: #1D211E;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    --text: #E8EAE6;
+    --text-dim: #9A9F97;
+    --text-faint: #63675F;
+    --accent: #5FE3A6;
+    --accent-dim: rgba(95,227,166,0.14);
+    --accent-line: rgba(95,227,166,0.35);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    min-height:100vh;
+    padding-bottom:90px;
+  }
+  /* top credit — fades on scroll */
+  #top-credit{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    gap:8px;
+    padding:10px 16px;
+    background:rgba(13,15,14,0.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--border);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-dim);
+    transition:opacity .35s ease;
+  }
+  #top-credit a{color:var(--accent); text-decoration:none;}
+  #top-credit a:hover{text-decoration:underline;}
+
+  .wrap{max-width:640px; margin:0 auto; padding:64px 20px 40px;}
+
+  header.hero{margin-bottom:32px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--accent);
+    letter-spacing:0.02em;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:26px;
+    font-weight:600;
+    line-height:1.4;
+    margin-bottom:10px;
+  }
+  .sub{color:var(--text-dim); font-size:14px; line-height:1.8; max-width:52ch;}
+
+  /* progress */
+  .progress-block{
+    margin-top:24px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .progress-top{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px;}
+  .progress-label{font-size:13px; color:var(--text-dim);}
+  .progress-count{font-family:'IBM Plex Mono', monospace; font-size:15px; color:var(--accent);}
+  .progress-track{height:6px; background:var(--surface-2); border-radius:99px; overflow:hidden;}
+  .progress-fill{height:100%; background:var(--accent); width:0%; transition:width .3s ease;}
+
+  /* categories */
+  .category{
+    margin-top:20px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .category-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 18px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .category-head:hover{background:var(--surface-2);}
+  .category-title-group{display:flex; align-items:center; gap:12px;}
+  .cat-index{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-faint);
+    min-width:24px;
+  }
+  .cat-title{font-size:15px; font-weight:500;}
+  .cat-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .chevron{
+    width:16px; height:16px;
+    color:var(--text-dim);
+    transition:transform .25s ease;
+    flex-shrink:0;
+  }
+  .category.open .chevron{transform:rotate(180deg);}
+
+  .category-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+    border-top:1px solid transparent;
+  }
+  .category.open .category-body{border-top-color:var(--border);}
+
+  .step{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:14px 18px;
+    border-bottom:1px solid var(--border);
+  }
+  .step:last-child{border-bottom:none;}
+
+  .step-check{
+    flex-shrink:0;
+    width:20px; height:20px;
+    border-radius:6px;
+    border:1.5px solid var(--border-strong);
+    background:var(--surface-2);
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:1px;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .step-check svg{width:12px; height:12px; opacity:0; transition:opacity .15s ease; color:var(--bg);}
+  .step-check.checked{background:var(--accent); border-color:var(--accent);}
+  .step-check.checked svg{opacity:1;}
+
+  .step-text{flex:1;}
+  .step-text p{font-size:13.5px; line-height:1.85; color:var(--text-dim);}
+  .step.checked .step-text p{color:var(--text-faint); text-decoration:line-through; text-decoration-color:var(--text-faint);}
+
+  /* China-diff badge + note */
+  .diff-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:#F5B14C;
+    background:rgba(245,177,76,0.12);
+    border:1px solid rgba(245,177,76,0.35);
+    border-radius:5px;
+    padding:2px 7px;
+    margin-bottom:6px;
+  }
+  .diff-note{
+    font-size:12.5px;
+    line-height:1.8;
+    color:#F5B14C;
+    background:rgba(245,177,76,0.08);
+    border-right:2.5px solid rgba(245,177,76,0.5);
+    padding:8px 10px;
+    border-radius:6px;
+    margin-top:8px;
+  }
+
+  /* used-device badge */
+  .used-badge{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--accent);
+    background:var(--accent-dim);
+    border:1px solid var(--accent-line);
+    border-radius:5px;
+    padding:2px 7px;
+    margin-bottom:6px;
+  }
+
+  /* intro alert box */
+  .intro-alert{
+    margin-top:16px;
+    background:rgba(245,177,76,0.06);
+    border:1px solid rgba(245,177,76,0.3);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .intro-alert h3{font-size:13px; color:#F5B14C; margin-bottom:8px; font-weight:600;}
+  .intro-alert ul{padding-right:18px; display:flex; flex-direction:column; gap:6px;}
+  .intro-alert li{font-size:13px; line-height:1.8; color:var(--text-dim);}
+  .intro-alert li b{color:var(--text);}
+
+  /* footer credit */
+  footer#footer-credit{
+    position:fixed; bottom:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:center;
+    gap:16px;
+    padding:12px 16px;
+    background:rgba(21,24,22,0.95);
+    backdrop-filter:blur(6px);
+    border-top:1px solid var(--border);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    flex-wrap:wrap;
+  }
+  footer#footer-credit a{
+    color:var(--text-dim);
+    text-decoration:none;
+    display:flex; align-items:center; gap:5px;
+  }
+  footer#footer-credit a:hover{color:var(--accent);}
+  footer#footer-credit .brand{color:var(--accent); font-weight:600;}
+  footer#footer-credit .sep{color:var(--border-strong);}
+
+  @media (max-width:480px){
+    footer#footer-credit{gap:10px; font-size:11px;}
+    h1{font-size:22px;}
+  }
+</style>
+</head>
+<body>
+
+<div id="top-credit">
+  Design by <a href="https://morphino.netlify.app/resume" target="_blank" rel="noopener">Morfi</a>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">تقرير فحص هاردوير — نسخة صينية (国行) · مستعمل</div>
+    <h1>شيك ليست اختبار MacBook Pro M1 - نسخة صينية</h1>
+    <p class="sub">نفس خطوات فحص النسخة العالمية، بالإضافة لخطوات مخصوصة للنسخة الصينية وللأجهزة المستعملة. أي خطوة عليها فرق عن النسخة العالمية معلّمة ببادج برتقالي "فرق نسخة صينية"، وأي خطوة إضافية لأنه جهاز مستعمل معلّمة ببادج أخضر "مستعمل".</p>
+  </header>
+
+  <div class="intro-alert">
+    <h3>⚠ أهم 4 فروق هتلاقيها في النسخة الصينية (اقرأها الأول)</h3>
+    <ul>
+      <li><b>الشاحن:</b> بييجي بفيشة صينية (2 سن مسطحين) مش نفس الفيشة اللي بتستخدمها في مصر، هتحتاج أدابتور أو تستخدم شاحن تاني عندك.</li>
+      <li><b>منطقة النظام (Region) مقفولة على الصين:</b> أول ما تشغّله هيبقى الـ Region مضبوط "China mainland" ومش هيتغيّر لوحده حتى لو غيّرت اللغة، والعلامة دي بتفضل مطبوعة جوه النظام (زي الـ Product Key المرتبط بمنطقة في ويندوز). أهم علامة تأكيد إنه فعلاً جهاز صيني أصلي: علم تايوان 🇹🇼 ما بيظهرش في الإيموجي نهائيًا حتى لو غيّرت المنطقة يدويًا بعد كده.</li>
+      <li><b>الضمان:</b> ضمان Apple بتاعه شغال جوه الصين بس، مركز آبل في مصر ممكن يرفض يصلحه أو يطلب فلوس زيادة.</li>
+      <li><b>الكيبورد نفسه:</b> نفس تخطيط الكيبورد الإنجليزي القياسي (US)، مفيش حروف صينية مطبوعة على المفاتيح — الكتابة الصينية بتبقى عن طريق برنامج إدخال (Pinyin) مش تخطيط كيبورد مختلف زي فكرة اللغة العربية على كيبورد ويندوز.</li>
+    </ul>
+  </div>
+
+  <div class="progress-block">
+    <div class="progress-top">
+      <span class="progress-label">نسبة الإنجاز</span>
+      <span class="progress-count"><span id="done-count">0</span>/<span id="total-count">0</span></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="categories"></div>
+</div>
+
+<footer id="footer-credit">
+  <a href="https://morphino.netlify.app/resume" target="_blank" rel="noopener"><span class="brand">Design by Morfi</span></a>
+  <span class="sep">|</span>
+  <a href="https://wa.me/201009088676" target="_blank" rel="noopener">واتساب</a>
+  <span class="sep">|</span>
+  <a href="https://instagram.com/Morfi.28i" target="_blank" rel="noopener">إنستجرام</a>
+  <span class="sep">|</span>
+  <a href="mailto:sdyqs0437@gmail.com">إيميل</a>
+</footer>
+
+<script>
+// كل خطوة ممكن تكون string عادي، أو object فيه:
+// text: النص، diff: ملاحظة فرق النسخة الصينية عن العالمية، used: true لو خطوة خاصة بجهاز مستعمل بس
+const data = [
+  {
+    title: "فحوصات أول ما الجهاز يفتح (قبل أي حاجة)",
+    steps: [
+      { text: "من أول شاشة إعداد، شوف الـ Region المكتوب هيبقى \"China mainland\" — ده طبيعي وعلامة إن الجهاز صيني أصلي مش تقليد", diff: "في النسخة العالمية بيبقى فاضي وانت اللي تختار بلدك بنفسك" },
+      { text: "افتح تطبيق Emoji واكتب 🇹🇼 (تايوان) في أي حقل كتابة — المفروض العلم ميظهرش خالص ويطلع مكانه رمز فاضي، ده أقوى دليل إن الجهاز فعلاً صيني حقيقي مش معاد وضع نظام عليه", diff: "في النسخة العالمية والشرق أوسطية العلم بيظهر عادي" },
+      { text: "قبل ما تسجل دخول بأي Apple ID بتاعك، تأكد إن الجهاز اتعمله Erase All Content and Settings من البائع (زي الـ Factory Reset في ويندوز) وإنه مش لسه مسجل بحساب حد تاني", used: true },
+      { text: "افتح System Settings ثم Apple ID أو Find My وتأكد إن Find My Mac (زي الـ Find My Device في ويندوز) مقفول ومش شغال بحساب البائع القديم — لو لسه شغال بحساب حد تاني، الجهاز يكون \"مقفول\" ومش هتقدر تستخدمه", used: true }
+    ]
+  },
+  {
+    title: "الشاشة",
+    steps: [
+      "افتح صورة رمادية موحدة أو موقع dead pixel test وشوف لو فيه بكسلات ميتة أو ملونة غريبة",
+      "افتح خلفية بيضاء وسوداء كاملة الشاشة وتأكد مفيش اصفرار أو تفاوت إضاءة في الحواف، خصوصًا في الإضاءة الخافتة",
+      "جرب True Tone وحرّك السطوع من أعلى للأقل وشوف الاستجابة سلسة",
+      { text: "افتح About This Mac وشوف هل الشاشة مكتوب عليها أي تنبيه \"Unable to verify this is a genuine Apple part\" (يعني الشاشة مش أصلية اتغيّرت قبل كده)", used: true }
+    ]
+  },
+  {
+    title: "الكيبورد والتراك باد",
+    steps: [
+      { text: "افتح موقع keyboardtester.com واضغط كل مفتاح للتأكد إنه بيسجل — الكيبورد نفس التخطيط الإنجليزي العادي، مفيش حروف صينية مطبوعة على المفاتيح", diff: "زي بالظبط النسخة العالمية، بس متتفاجئش إن مفيش حروف صينية على الكيبورد، الكتابة الصينية بتبقى ببرنامج إدخال (Input Method) مش تخطيط كيبورد مختلف" },
+      "جرب التراك باد: الضغط، السحب بإصبعين للسكرول، والضغط بقوة (Force Touch)",
+      "جرب الزوايا الأربعة للتراك باد وتأكد إن الاستجابة ثابتة في كل الأماكن",
+      "تأكد مفيش مفتاح عالق أو صوت طقطقة غير طبيعي"
+    ]
+  },
+  {
+    title: "المنافذ (Thunderbolt / USB-C)",
+    steps: [
+      "وصّل فلاشة أو هارد خارجي في كل بورت لوحده وتأكد إنه بيتعرف عليه",
+      { text: "جرب الشحن من كل بورت على حدة — الشاحن الأصلي المرفق هيبقى بفيشة صينية (سنين مسطحين) مش هتشتغل في بريزة مصرية من غير أدابتور", diff: "النسخة اللي بتتباع في مصر بتيجي بشاحن بفيشة أوروبية عادي تركبه على طول" },
+      "لو عندك شاشة خارجية، جرب خرج الفيديو من كل بورت"
+    ]
+  },
+  {
+    title: "البطارية",
+    steps: [
+      "افتح About This Mac ثم System Report ثم Power وشوف Cycle Count وCondition (المفروض تكون Normal)",
+      "اتركه شغال على البطارية بس وراقب نسبة الاستهلاك في ساعة استخدام عادية",
+      { text: "في نفس صفحة Power، شوف هل فيه تنبيه \"Service Recommended\" أو \"Replace Now\" جنب حالة البطارية — لو موجود يبقى البطارية محتاجة تغيير قريب", used: true },
+      { text: "لو تقدر، حمّل برنامج زي coconutBattery (زي أدوات فحص البطارية في ويندوز) عشان تشوف الـ Full Charge Capacity الفعلية مقارنة بالأصلية وتتأكد إن البطارية مش مغيّرة بواحدة تقليد", used: true }
+    ]
+  },
+  {
+    title: "كاميرا وميكروفون وسبيكر",
+    steps: [
+      "افتح Photo Booth أو FaceTime وجرب الكاميرا",
+      "سجل صوت من Voice Memos وسمعه للتأكد من وضوح الميكروفون",
+      "شغل أغنية وارفع الصوت لأقصى درجة وسمع لو فيه تشويش من أي سبيكر"
+    ]
+  },
+  {
+    title: "واي فاي وبلوتوث",
+    steps: [
+      "اتصل بشبكة وجرب سرعة النت من fast.com",
+      "وصّل سماعة أو ماوس بلوتوث وشوف الاتصال ثابت من غير قطع"
+    ]
+  },
+  {
+    title: "تخزين SSD",
+    steps: [
+      "افتح Disk Utility واعمل First Aid على القرص للتأكد مفيش أخطاء",
+      "استخدم تطبيق زي Blackmagic Disk Speed Test عشان تقيس سرعة القراءة والكتابة",
+      { text: "افتح System Report ثم Storage وشوف سعة القرص المكتوبة مطابقة لسعة الجهاز اللي البائع قالها (عشان تتأكد مفيش تلاعب في المواصفات المعلنة)", used: true }
+    ]
+  },
+  {
+    title: "الأداء والحرارة",
+    steps: [
+      "شغل اختبار ضغط زي Cinebench أو Geekbench وراقب الأداء يفضل ثابت من غير Throttling",
+      "افتح تطبيق زي iStat Menus أو Macs Fan Control وتابع درجة الحرارة أثناء الضغط"
+    ]
+  },
+  {
+    title: "تاتش آي دي والحساسات",
+    steps: [
+      "سجل بصمة جديدة وجرب تفتح بيها القفل أكتر من مرة",
+      "غيّر مكان الإضاءة حواليك وشوف الشاشة بتغيّر سطوعها تلقائي (حساس الإضاءة)"
+    ]
+  },
+  {
+    title: "النظام والتحديثات",
+    steps: [
+      "افتح System Settings ثم General ثم Software Update وتأكد إن آخر تحديث متثبت",
+      "اضغط زرار الباور وسيبه لحد ما يظهر خيار Apple Diagnostics وسيبه يعمل تقرير كامل عن الهاردوير",
+      { text: "افتح System Settings ثم General ثم Device Management وتأكد مفيش أي بروفايل \"MDM\" أو \"Remote Management\" متسجل عليه (زي لما جهاز ويندوز يبقى مقفول بحساب شركة قديمة)", used: true }
+    ]
+  },
+  {
+    title: "التحقق من هوية الجهاز (خاص بالمستعمل)",
+    steps: [
+      { text: "افتح About This Mac وسجّل الـ Serial Number، وادخل بيه على صفحة checkcoverage.apple.com من المتصفح وتأكد إن الجهاز أصلي ومعروف عند آبل ومش فيه تحذير", used: true },
+      { text: "قارن الـ Serial Number المكتوب تحت الجهاز نفسه مع اللي ظاهر في About This Mac — لو مختلفين يبقى فيه قطعة اتغيّرت (زي اللوحة الأم)", used: true },
+      { text: "افحص البراغي حوالين الجهاز من تحت (Pentalobe) وشوف لو فيها خدوش كتير تدل إن الجهاز اتفتح قبل كده أكتر من مرة", used: true },
+      { text: "افتح الجهاز وافحص حواف اللوحة والمنافذ بعينيك (أو بلمبة صغيرة) عن أي أثر صدأ أو تغيّر لون يدل على تعرضه لسائل قبل كده", used: true },
+      { text: "تأكد إن الشاحن والكابل المرفقين شكلهم ووزنهم مطابق للأصلي (الشحن من قطعة تقليد بييجي أبطأ وأحيانًا بيسخن)", used: true }
+    ]
+  }
+];
+
+const container = document.getElementById('categories');
+let totalSteps = 0;
+
+data.forEach((cat, ci) => {
+  const catEl = document.createElement('div');
+  catEl.className = 'category';
+
+  const head = document.createElement('div');
+  head.className = 'category-head';
+  head.innerHTML = `
+    <div class="category-title-group">
+      <span class="cat-index">${String(ci+1).padStart(2,'0')}</span>
+      <span class="cat-title">${cat.title}</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span class="cat-count" data-cat-count>0/${cat.steps.length}</span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+  `;
+
+  const body = document.createElement('div');
+  body.className = 'category-body';
+
+  cat.steps.forEach((rawStep, si) => {
+    totalSteps++;
+    const stepObj = typeof rawStep === 'string' ? { text: rawStep } : rawStep;
+    const step = document.createElement('div');
+    step.className = 'step';
+    const badges = `${stepObj.diff ? '<span class="diff-badge">⚡ فرق نسخة صينية</span> ' : ''}${stepObj.used ? '<span class="used-badge">🔧 مستعمل</span>' : ''}`;
+    const diffNote = stepObj.diff ? `<div class="diff-note">${stepObj.diff}</div>` : '';
+    step.innerHTML = `
+      <div class="step-check" role="checkbox" aria-checked="false" tabindex="0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </div>
+      <div class="step-text">${badges ? `<div>${badges}</div>` : ''}<p>${stepObj.text}</p>${diffNote}</div>
+    `;
+    const checkEl = step.querySelector('.step-check');
+    const toggle = () => {
+      const isChecked = checkEl.classList.toggle('checked');
+      step.classList.toggle('checked', isChecked);
+      checkEl.setAttribute('aria-checked', String(isChecked));
+      updateCounts(catEl, cat.steps.length);
+    };
+    checkEl.addEventListener('click', toggle);
+    checkEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+    body.appendChild(step);
+  });
+
+  head.addEventListener('click', () => {
+    const isOpen = catEl.classList.toggle('open');
+    body.style.maxHeight = isOpen ? body.scrollHeight + 'px' : '0px';
+  });
+
+  catEl.appendChild(head);
+  catEl.appendChild(body);
+  container.appendChild(catEl);
+});
+
+document.getElementById('total-count').textContent = totalSteps;
+
+function updateCounts(catEl, catTotal) {
+  const catChecked = catEl.querySelectorAll('.step-check.checked').length;
+  catEl.querySelector('[data-cat-count]').textContent = `${catChecked}/${catTotal}`;
+
+  const allChecked = document.querySelectorAll('.step-check.checked').length;
+  document.getElementById('done-count').textContent = allChecked;
+  document.getElementById('progress-fill').style.width = (allChecked / totalSteps * 100) + '%';
+}
+
+/* fade top credit on scroll */
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const credit = document.getElementById('top-credit');
+  const opacity = Math.max(0, 1 - y / 120);
+  credit.style.opacity = opacity;
+  credit.style.pointerEvents = opacity < 0.05 ? 'none' : 'auto';
+});
+</script>
+
+</body>
+</html>
